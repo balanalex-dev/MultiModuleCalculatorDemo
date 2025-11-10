@@ -1,0 +1,102 @@
+@startuml
+title Simple Calculator MVC - PlantUML
+
+' ========================
+' Module: core
+' ========================
+package "core.model" {
+    class Calculator {
+        - currentValue: double
+        + getCurrentValue(): double
+        + setCurrentValue(double)
+        + calculate(a: double, b: double, op: Operation): double
+        + clear(): void
+    }
+
+    enum Operation {
+        ADD("+")
+        SUBTRACT("-")
+        MULTIPLY("*")
+        DIVIDE("/")
+        + getSymbol(): String
+        + fromSymbol(String): Operation
+    }
+}
+
+Calculator --> Operation
+
+' ========================
+' Module: interaction
+' ========================
+package "interaction.interfaces" {
+    interface GuiFrame {
+        + displayResult(double)
+        + setController(CalculatorController)
+        + showFrame()
+    }
+
+    interface GuiFactory {
+        + createCalculatorFrame(): GuiFrame
+    }
+
+    interface CalculatorController {
+        + onNumberPressed(String)
+        + onOperationPressed(Operation)
+        + onEqualsPressed()
+        + onClearPressed()
+    }
+}
+
+' ========================
+' Module: gui
+' ========================
+package "gui.view" {
+    class CalculatorFrame implements GuiFrame {
+        - panel: CalculatorPanel
+        + displayResult(double)
+        + setController(CalculatorController)
+        + showFrame()
+    }
+
+    class CalculatorPanel {
+        + getButtons(): List<JButton>
+    }
+}
+
+package "gui.controller" {
+    class SwingCalculatorController implements CalculatorController {
+        - calculator: Calculator
+        - frame: GuiFrame
+        + onNumberPressed(String)
+        + onOperationPressed(Operation)
+        + onEqualsPressed()
+        + onClearPressed()
+    }
+
+    class SwingGuiFactory implements GuiFactory {
+        + createCalculatorFrame(): GuiFrame
+    }
+}
+
+CalculatorFrame --> CalculatorPanel
+SwingCalculatorController --> Calculator
+SwingCalculatorController --> GuiFrame
+SwingGuiFactory --> CalculatorFrame
+
+' Implementation arrows
+CalculatorFrame -|> GuiFrame
+SwingCalculatorController -|> CalculatorController
+SwingGuiFactory -|> GuiFactory
+
+' ========================
+' Application Entry Point
+' ========================
+class Main {
+    + main(String[]): void
+}
+
+Main --> Calculator
+Main --> SwingCalculatorController
+Main --> SwingGuiFactory
+
+@enduml

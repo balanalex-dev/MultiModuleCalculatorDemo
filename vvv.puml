@@ -1,0 +1,31 @@
+@startuml
+title UML Class Diagram - Simple Calculator (MVC, Swing, Modular)
+
+' =======================
+' Module: core
+' =======================
+
+
+' =======================
+' Module: interaction
+' =======================
+
+
+' =======================
+' Module: gui
+' =======================
+
+' =======================
+' Relationships
+' =======================
+CalculatorFrame --> CalculatorPanel
+SwingCalculatorController --> Calculator
+SwingCalculatorController --> GuiFrame
+SwingGuiFactory --> CalculatorFrame
+
+' Implementation arrows
+CalculatorFrame -|> GuiFrame
+SwingGuiFactory -|> GuiFactory
+SwingCalculatorController -|> CalculatorController
+
+@enduml
