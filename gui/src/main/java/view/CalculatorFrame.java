@@ -1,5 +1,6 @@
 package view;
 
+import interfaces.ButtonFactory;
 import interfaces.CalculatorController;
 import interfaces.GuiFrame;
 import interfaces.Operation;
@@ -17,7 +18,7 @@ public class CalculatorFrame extends JFrame implements GuiFrame {
     private final JTextField display;
     private CalculatorController controller;
 
-    public CalculatorFrame() {
+    public CalculatorFrame(ButtonFactory buttonFactory) {
 
         setTitle("Simple Calculator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,22 +33,26 @@ public class CalculatorFrame extends JFrame implements GuiFrame {
         add(display, BorderLayout.NORTH);
 
         // Панель кнопок
-        JPanel panel = new JPanel(new GridLayout(4, 4, 5, 5));
-        String[] buttons = {
-                "7", "8", "9", "+",
-                "4", "5", "6", "-",
-                "1", "2", "3", "*",
-                "C", "0", "=", "/"
-        };
 
-        for (String text : buttons) {
-            JButton btn = new JButton(text);
-            btn.setFont(new Font("Arial", Font.PLAIN, 20));
-            btn.addActionListener(new ButtonClickListener());
-            panel.add(btn);
-        }
-
+        panel = new CalculatorPanel(buttonFactory, new ButtonClickListener());
         add(panel, BorderLayout.CENTER);
+
+//        JPanel panel = new JPanel(new GridLayout(4, 4, 5, 5));
+//        String[] buttons = {
+//                "7", "8", "9", "+",
+//                "4", "5", "6", "-",
+//                "1", "2", "3", "*",
+//                "C", "0", "=", "/"
+//        };
+//
+//        for (String text : buttons) {
+//            JButton btn = new JButton(text);
+//            btn.setFont(new Font("Arial", Font.PLAIN, 20));
+//            btn.addActionListener(new ButtonClickListener());
+//            panel.add(btn);
+//        }
+//
+//        add(panel, BorderLayout.CENTER);
     }
     @Override
     public void displayResult(double value) {

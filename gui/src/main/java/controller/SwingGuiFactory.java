@@ -1,5 +1,6 @@
 package controller;
 
+import interfaces.ButtonFactory;
 import interfaces.GuiFactory;
 import interfaces.GuiFrame;
 import view.CalculatorFrame;
@@ -11,6 +12,8 @@ public class SwingGuiFactory implements GuiFactory {
 
     @Override
     public GuiFrame createCalculatorFrame() {
-        return new CalculatorFrame();
+        ButtonFactory buttonFactory = new SwingButtonFactory();
+
+        return new CalculatorFrame(buttonFactory);
     }
 }

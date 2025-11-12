@@ -1,18 +1,26 @@
 package view;
 
+import interfaces.ButtonFactory;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Панель кнопок калькулятора.
  */
 public class CalculatorPanel extends JPanel {
 
-    private final List<JButton> buttons = new ArrayList<>();
+    //private final List<JButton> buttons = new ArrayList<>();
 
-    public CalculatorPanel() {
+    private final Map<String, JButton> buttons = new LinkedHashMap<>();
+
+
+    public CalculatorPanel(ButtonFactory buttonFactory, ActionListener listener) {
         setLayout(new GridLayout(4, 4, 5, 5));
 
         String[] labels = {
@@ -22,11 +30,11 @@ public class CalculatorPanel extends JPanel {
                 "C", "0", "=", "/"
         };
 
-        for (String label : labels) {
-            JButton button = new JButton(label);
-            button.setFont(new Font("Arial", Font.PLAIN, 20));
-            buttons.add(button);
+        for (String label : labels) { //todo патерн абстракт фактори и применить его к кнопкам
+            JButton button = buttonFactory.createButton(label, listener);
+            buttons.put(label, button);
             add(button);
+
         }
     }
 
@@ -34,7 +42,7 @@ public class CalculatorPanel extends JPanel {
      * Возвращает все кнопки панели.
      * Контроллер или фрейм могут подписывать слушателей.
      */
-    public List<JButton> getButtons() {
+    public Map<String, JButton> getButtons() {
         return buttons;
     }
 }
